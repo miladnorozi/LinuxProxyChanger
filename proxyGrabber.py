@@ -1,7 +1,7 @@
 __author__ = 'tal89'
 from bs4 import BeautifulSoup
 import urllib2
-
+import os, time, requests, sys, threading
 
 
 def GrabProxies():
@@ -53,5 +53,13 @@ def GrabProxies():
         print(col1 + ":" + col2)
         f = (col1 + ":" + col2)
 
-
-GrabProxies()
+def checkProxy(Proxy,url):
+    try:
+            sess = requests.session()
+            sess.proxies = {'http':Proxy}
+            sess.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebkit/537.36'
+                                            '(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
+            result = sess.get(url, timeout=5, proxies={'http:' Proxy})
+            if result.status_code == 200:
+                with open('okProxy.txt','a') as xx:
+                        xx.write(Proxy+'\n')

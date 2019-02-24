@@ -1,6 +1,5 @@
 #!/bin/bash
 filename="$1"
-while read -r line; do
-	name="$line"
-	echo "Name read from file - $name"
+while read line; do
+	echo "$line"
 done < "$filename"

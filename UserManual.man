@@ -1,0 +1,12 @@
+USER OR CRON JUST RUN BASH SCRIPT
+
+1-set proxy setting to manual
+2-run python script to grab proxy and create proxies.txt file 
+	(in python scripts all proxies are checked and all are good)
+3-open proxies.txt file read line by line
+4-check line is correct
+5-devide line in two string by : character
+6-set systems proxy 
+7-check is connected
+8-if it's ok remove that line from file
+
