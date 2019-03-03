@@ -1,12 +1,59 @@
 #!/bin/bash
 
 state=$(gsettings get org.gnome.system.proxy mode)
+
+#set proxy setting to manual in gnome
 if [ $state == "'none'" ]; then
 	gsettings set org.gnome.system.proxy mode 'manual'
 fi
-proxy_host="176.105.199.19"
-proxy_port=":52024"
-proxy_string="176.105.199.19:52024"
+
+
+
+getOkProxyFromFile () {
+	filename="okProxy.txt"
+  test=0
+	while [ $test -lt 100 ]
+	do
+    filename="okProxy.txt"
+    line=$(head -n 1 $filename)
+    result=$(python proxyChecker.py $line)
+    if [ $result -eq 1 ]; then
+			sed -i '1d' okProxy.txt
+      return 1
+		else
+			sed -i '1d' okProxy.txt
+    fi
+done
+}
+okProxyFile="okProxy.txt"
+if [ -f "$okProxyFile" ]
+then
+	echo "file exists "
+	getOkProxyFromFile
+else
+	python proxyGrabber.py
+	sleep 30
+	getOkProxyFromFile
+fi
+
+counter=0
+proxy=$(echo $line | tr ":" "\n")
+proxy_host=""
+proxy_port=""
+for addr in $proxy
+do
+	if [ $counter == 0 ]
+	then
+		proxy_host=$addr
+		let "counter++"
+	else
+		proxy_port=$addr
+	fi
+done
+echo $proxy_host
+echo $proxy_port
+
+proxy_string="$proxy_host:$proxy_port"
 export HTTP_PROXY=$proxy_string
 export http_proxy=$proxy_string
 
