@@ -50,8 +50,6 @@ do
 		proxy_port=$addr
 	fi
 done
-echo $proxy_host
-echo $proxy_port
 
 proxy_string="$proxy_host:$proxy_port"
 export HTTP_PROXY=$proxy_string
